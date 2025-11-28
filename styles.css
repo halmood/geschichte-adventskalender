@@ -1,0 +1,77 @@
+:root {
+    /* THEMA: MITTELALTER (Dunkles Holz, Gold, Pergament) */
+    --bg-primary: #1a120b;      /* Sehr dunkles Braun/Schwarz */
+    --bg-secondary: #3e1f1f;    /* Dunkles Burgunderrot */
+    --bg-glass: rgba(232, 220, 197, 0.1); /* Helles Pergament, transparent */
+    
+    --accent-color: #d4af37;    /* Gold */
+    --accent-hover: #f2d06b;    /* Helles Gold */
+    --accent-glow: rgba(212, 175, 55, 0.5); /* Goldenes Leuchten */
+    
+    --text-primary: #e8dcc5;    /* Pergament-Farbe */
+    --text-secondary: #a89f91;  /* Dunkleres Beige */
+    
+    /* Fonts passend zum HTML Import: */
+    --font-heading: 'Cinzel', serif; 
+    --font-body: 'Crimson Text', serif;           
+    
+    --radius-sm: 4px;   /* Etwas kantiger für historischen Look */
+    --radius-lg: 8px;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    margin: 0; padding: 20px;
+    background: radial-gradient(circle at top center, var(--bg-secondary) 0%, var(--bg-primary) 80%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-secondary); border: 1px solid var(--accent-color); border-radius: 5px; }
+
+header { text-align: center; margin-bottom: 60px; padding-top: 40px; }
+.logo-icon { font-size: 3.5em; margin-bottom: 15px; display: block; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+h1 { font-family: var(--font-heading); color: var(--accent-color); text-transform: uppercase; letter-spacing: 3px; font-size: clamp(2rem, 5vw, 3rem); margin: 0; display: inline-block; border-bottom: 3px solid var(--accent-color); padding-bottom: 15px; }
+h1 span { color: var(--text-primary); }
+.subtitle { font-family: var(--font-body); font-size: 1.3em; font-style: italic; color: var(--text-secondary); margin-top: 15px; }
+
+#calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto 80px auto; }
+
+.advent-door {
+    display: flex; justify-content: center; align-items: center; aspect-ratio: 1 / 1;
+    background: var(--bg-glass); border: 2px solid var(--accent-color); color: var(--accent-color);
+    font-size: 2.2em; font-weight: 700; border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px); box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    cursor: pointer; transition: all 0.3s ease; position: relative; font-family: var(--font-heading);
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h20v20H0z" fill="none"/><path d="M10 2l2 5h5l-4 3 1.5 5-4.5-3.5L5.5 15l1.5-5-4-3h5z" fill="%23d4af37" opacity="0.1"/></svg>');
+}
+
+.advent-door.locked { cursor: not-allowed; opacity: 0.6; background: rgba(0,0,0,0.4); border-color: #555; color: #555; background-image: none; }
+.advent-door.locked::before { content: "🔒"; font-size: 14px; position: absolute; top: 10px; right: 10px; opacity: 0.5; }
+
+.advent-door.active { 
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), var(--bg-secondary));
+    box-shadow: 0 0 15px var(--accent-glow); animation: pulse 3s infinite; 
+}
+.advent-door.active:hover { transform: translateY(-5px) scale(1.03); background: var(--accent-color); color: var(--bg-primary); box-shadow: 0 0 25px var(--accent-glow); }
+
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
+
+#riddle-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+.modal-content { background: var(--bg-primary); border: 2px solid var(--accent-color); padding: 30px; max-width: 550px; width: 90%; max-height: 90vh; overflow-y: auto; text-align: center; border-radius: var(--radius-lg); position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+h2#modal-title { color: var(--accent-color); font-family: var(--font-heading); border-bottom: 1px solid var(--accent-color); padding-bottom: 10px; }
+.riddle-img { width: 100%; height: auto; max-height: 250px; object-fit: contain; margin: 15px 0; display: none; border-radius: var(--radius-sm); border: 1px solid var(--accent-color); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+#modal-text { font-size: 1.3em; line-height: 1.6; margin: 20px 0; }
+#modal-result { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--accent-color); }
+#modal-answer { color: var(--accent-color); font-size: 1.5em; font-family: var(--font-heading); font-weight: 700; margin-bottom: 10px; }
+#modal-explanation { background: rgba(255,255,255,0.05); padding: 15px; text-align: left; border-left: 3px solid var(--accent-color); color: var(--text-primary); font-size: 1.1em; }
+
+button { background: transparent; border: 2px solid var(--accent-color); color: var(--accent-color); padding: 10px 30px; font-family: var(--font-heading); font-size: 1.1em; cursor: pointer; border-radius: 2px; transition: 0.3s; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+button:hover { background: var(--accent-color); color: var(--bg-primary); box-shadow: 0 0 15px var(--accent-glow); }
+.close-btn { position: absolute; top: 15px; right: 20px; color: var(--accent-color); font-size: 30px; cursor: pointer; transition: 0.2s; }
+.close-btn:hover { color: #fff; transform: scale(1.1); }
