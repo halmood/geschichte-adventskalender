@@ -207,7 +207,7 @@ const currentDay = now.getDate();
 const currentMonth = now.getMonth() + 1; 
 
 // Test-Modus: true = Alle Türchen offen (zum Testen)
-const testMode = true; 
+const testMode = false; 
 
 calendarData.forEach(item => {
     const door = document.createElement('div');
