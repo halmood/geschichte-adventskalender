@@ -159,3 +159,102 @@ const calendarData = [
         text: "Drucker gab es noch nicht. Jedes Buch musste in monatelanger Handarbeit abgeschrieben werden. Wie hieß der Schreibsaal im Kloster?",
         answer: "Skriptorium",
         explanation: "Ein einziges Buch konnte so viel wert sein wie ein ganzer Bauernhof. Die Mönche arbeiteten oft im Stehen bei schlechtem Licht."
+    },
+    {
+        day: 21,
+        type: "Macht",
+        title: "Streit der Giganten",
+        text: "Der Papst und der Kaiser stritten sich heftig darum, wer die Bischöfe bestimmen darf. Der Kaiser musste sogar im Büßerhemd im Schnee knien. Wie heißt dieser Streit?",
+        answer: "Investiturstreit",
+        explanation: "Es ging um die Frage: Wer ist mächtiger? Der Papst (Kirche) oder der Kaiser (Staat)? Das Knien in Canossa war ein cleverer Schachzug des Kaisers."
+    },
+    {
+        day: 22,
+        type: "Alltag",
+        title: "Das stille Örtchen?",
+        text: "Gab es auf einer Burg Toiletten mit Wasserspülung? Nein! Aber es gab kleine Erker an der Burgmauer mit einem Loch. Wohin fiel... naja, 'alles'?",
+        answer: "In den Burggraben (Aborterker)",
+        explanation: "Das stank im Sommer gewaltig! Manchmal kletterten Feinde sogar durch den Schacht des Plumpsklos in die Burg (kein Witz!)."
+    },
+    {
+        day: 23,
+        type: "Person",
+        title: "Ein junges Mädchen",
+        text: "Sie war kein Ritter, sondern ein einfaches Bauernmädchen. Trotzdem führte sie die französische Armee zum Sieg. Später wurde sie verbrannt. Wer war sie?",
+        answer: "Jeanne d'Arc (Johanna von Orleans)",
+        explanation: "Sie sagte, sie höre Stimmen von Heiligen, die ihr den Auftrag gaben. Heute ist sie die Nationalheilige Frankreichs."
+    },
+    {
+        day: 24,
+        type: "Epochenwandel",
+        title: "Eine Revolution",
+        text: "Um 1450 erfand Johannes Gutenberg etwas, das die Welt für immer veränderte. Plötzlich konnte Wissen rasend schnell verbreitet werden. Was war es?",
+        answer: "Der Buchdruck mit beweglichen Lettern",
+        explanation: "Das war das 'Internet des Mittelalters'. Flugblätter und Bücher wurden billig. Das finstere Mittelalter ging damit zu Ende."
+    }
+];
+
+// --- TEIL 2: DIE LOGIK ---
+// ACHTUNG: Das hier unten ist der Teil, der bei dir gefehlt hat!
+const grid = document.getElementById('calendar-grid');
+const modal = document.getElementById('riddle-modal');
+const closeBtn = document.querySelector('.close-btn');
+const revealBtn = document.getElementById('reveal-btn');
+const modalResult = document.getElementById('modal-result');
+
+const now = new Date();
+const currentDay = now.getDate();
+const currentMonth = now.getMonth() + 1; 
+
+// Test-Modus: true = Alle Türchen offen (zum Testen)
+const testMode = true; 
+
+calendarData.forEach(item => {
+    const door = document.createElement('div');
+    door.classList.add('advent-door');
+    door.textContent = item.day;
+    
+    let isLocked = true;
+    if (currentMonth === 12 && item.day <= currentDay) isLocked = false;
+    if (testMode) isLocked = false;
+
+    if (isLocked) {
+        door.classList.add('locked');
+        door.onclick = () => {
+            door.style.transform = "translateX(5px)";
+            setTimeout(() => door.style.transform = "translateX(0)", 100);
+            setTimeout(() => door.style.transform = "translateX(-5px)", 200);
+            setTimeout(() => door.style.transform = "translateX(0)", 300);
+        };
+    } else {
+        door.classList.add('active');
+        door.onclick = () => openDoor(item);
+    }
+    grid.appendChild(door);
+});
+
+function openDoor(data) {
+    document.getElementById('modal-title').innerText = `Tag ${data.day}: ${data.title}`;
+    document.getElementById('modal-text').innerHTML = data.text;
+    document.getElementById('modal-answer').innerText = data.answer;
+    document.getElementById('modal-explanation').innerHTML = data.explanation;
+    
+    // --- BILD LOGIK ---
+    const imgEl = document.getElementById('modal-img');
+    if(imgEl) {
+        imgEl.src = `images/tag${data.day}.png`;
+        imgEl.style.display = 'block';
+    }
+    // -----------------
+
+    modalResult.style.display = 'none';
+    revealBtn.style.display = 'inline-block';
+    modal.style.display = 'flex';
+}
+
+revealBtn.onclick = () => {
+    modalResult.style.display = 'block';
+    revealBtn.style.display = 'none';
+};
+closeBtn.onclick = () => modal.style.display = 'none';
+window.onclick = (event) => { if (event.target == modal) modal.style.display = 'none'; };
